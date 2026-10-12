@@ -2,6 +2,14 @@
 
 namespace App\Providers;
 
+use App\Models\Author;
+use App\Models\BlogSetting;
+use App\Models\Category;
+use App\Models\Post;
+use App\Observers\AuthorObserver;
+use App\Observers\BlogSettingObserver;
+use App\Observers\CategoryObserver;
+use App\Observers\PostObserver;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -19,6 +27,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Author::observe(AuthorObserver::class);
+        Post::observe(PostObserver::class);
+        Category::observe(CategoryObserver::class);
+        BlogSetting::observe(BlogSettingObserver::class);
     }
 }

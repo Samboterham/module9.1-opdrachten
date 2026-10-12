@@ -23,14 +23,20 @@ Laravel is accessible, powerful, and provides tools required for large, robust a
 
 ## Run this project
 
-From the repository folder, start the local development server:
+The blog runs in Docker with PHP 8.4 and MySQL 8.4. Docker Compose starts both services. In `laravel-app/.env`, use `DB_CONNECTION=mysql`, `DB_HOST=mysql`, `DB_PORT=3306`, `DB_DATABASE=module9_blog`, and `DB_USERNAME=module9_user`. Set strong, local-only values for `DB_PASSWORD` and `DB_ROOT_PASSWORD`; do not commit the `.env` file.
 
 ```powershell
 cd laravel-app
-php artisan serve
+docker compose build app
+docker compose run --rm app composer install
+docker compose up -d --build
+docker compose exec app php artisan config:clear
+docker compose exec app php artisan migrate --seed
 ```
 
-Open `http://127.0.0.1:8000` to view the blog. The home page is served by `/`, and each “Read More” link opens `/post`.
+Open `http://127.0.0.1:8020` to view the blog. The home page is served by `/`; article pages use `/post/{slug}`. Blog posts, authors, categories, and page copy are stored in MySQL and loaded through Eloquent. The seeded page data is cached for five minutes and model observers clear the cache when it changes.
+
+Run the feature tests on the host with `php artisan test`; tests use an in-memory SQLite database. The Docker PHP container is configured with the MySQL driver used by the running app.
 
 ## Learning Laravel
 

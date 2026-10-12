@@ -1,11 +1,7 @@
 <?php
 
+use App\Http\Controllers\BlogController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('posts.index');
-});
-
-Route::get('/post', function () {
-    return view('posts.show');
-})->name('posts.show');
+Route::get('/', [BlogController::class, 'index'])->name('posts.index');
+Route::get('/post/{slug}', [BlogController::class, 'show'])->name('posts.show');
